@@ -5,6 +5,7 @@ import { Movie } from '../../types/Movie';
 type Props = {
   onAdd: (movie: Movie) => void;
 };
+
 export const NewMovie: React.FC<Props> = ({ onAdd }) => {
   const [count, setCount] = useState(0);
   const [movieInput, setMovieInput] = useState<Movie>({
@@ -14,6 +15,10 @@ export const NewMovie: React.FC<Props> = ({ onAdd }) => {
     imdbUrl: '',
     imdbId: '',
   });
+
+  // ✅ Регулярка для проверки URL
+  const urlRegex = /^(https?:\/\/)([\w\-]+(\.[\w\-]+)+)([^\s]*)$/;
+  const validateUrl = (value: string) => urlRegex.test(value);
 
   function handleTitleChange(newValue: string) {
     setMovieInput(input => ({
@@ -97,20 +102,24 @@ export const NewMovie: React.FC<Props> = ({ onAdd }) => {
         onChange={(newValue: string) => handleDescriptionChange(newValue)}
       />
 
+      {/* ✅ Добавили validate */}
       <TextField
         name="imgUrl"
         label="Image URL"
         value={movieInput.imgUrl}
         onChange={(newValue: string) => handleImgUrlChange(newValue)}
         required
+        validate={validateUrl}
       />
 
+      {/* ✅ Добавили validate */}
       <TextField
         name="imdbUrl"
         label="Imdb URL"
         value={movieInput.imdbUrl}
         onChange={(newValue: string) => handleImdbUrlChange(newValue)}
         required
+        validate={validateUrl}
       />
 
       <TextField
